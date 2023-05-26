@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <h1>SIP Integration</h1>
+    <title>SIP Integration - Result</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -19,11 +19,26 @@
                     }
                 });
             });
+
+            $("#callStatusForm").submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/call_status",
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        alert("Call status: " + data);
+                    },
+                    error: function(error) {
+                        alert("Failed to retrieve call status.");
+                    }
+                });
+            });
         });
     </script>
 </head>
 <body>
-    <h1>SIP Integration</h1>
+    <h1>SIP Integration - Result</h1>
     <p>Caller ID: {{ caller_id }}</p>
     <form id="terminateForm" method="POST" action="/terminate_call">
         <input type="hidden" name="ip_address" value="{{ ip_address }}">
@@ -32,8 +47,15 @@
         <input type="hidden" name="call_id" value="{{ caller_id }}">
         <input type="submit" value="Terminate Call">
     </form>
+
+    <form id="callStatusForm" method="POST" action="/call_status">
+        <input type="hidden" name="ip_address" value="{{ ip_address }}">
+        <input type="hidden" name="cam_user" value="{{ cam_user }}">
+        <input type="hidden" name="cam_pass" value="{{ cam_pass }}">
+        <input type="hidden" name="call_id" value="{{ caller_id }}">
+        <input type="submit" value="Get Call Status">
+    </form>
 </body>
 </html>
-
 
 
