@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <h1>SIP Integration</h1>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#terminateForm").submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/terminate_call",
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        alert("Call terminated successfully!");
+                    },
+                    error: function(error) {
+                        alert("Failed to terminate call.");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>SIP Integration</h1>
+    <p>Caller ID: {{ caller_id }}</p>
+    <form id="terminateForm" method="POST" action="/terminate_call">
+        <input type="hidden" name="ip_address" value="{{ ip_address }}">
+        <input type="hidden" name="cam_user" value="{{ cam_user }}">
+        <input type="hidden" name="cam_pass" value="{{ cam_pass }}">
+        <input type="hidden" name="call_id" value="{{ caller_id }}">
+        <input type="submit" value="Terminate Call">
+    </form>
+</body>
+</html>
+
+
+
