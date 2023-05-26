@@ -1,6 +1,6 @@
 # AXIS-SIP-Flask
 
-From simple application to make a call/terminate using an AXIS speaker to call an extension from SIP Server using FreePBX.
+A Flask/Python application demonstrating a simple integration of the APIs using SIP using an AXIS speaker to call an extension from the SIP Server.
 
 Demo video showing how it works
 
