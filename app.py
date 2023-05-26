@@ -24,6 +24,15 @@ def terminate_call():
     term_call_server(ip_address, cam_user, cam_pass, call_id)
     return "Call terminated successfully!"
 
+@app.route('/call_status', methods=['POST'])
+def call_status():
+    ip_address = request.form.get('ip_address')
+    cam_user = request.form.get('cam_user')
+    cam_pass = request.form.get('cam_pass')
+    call_id = request.form.get('call_id')
+    response = get_call_status(ip_address, cam_user, cam_pass, call_id)
+    return response
+
 def get_callerID(ip_address, cam_user, cam_pass, ext_sip):
     auth = HTTPDigestAuth(cam_user, cam_pass)
     url = f"http://{ip_address}/vapix/call"
@@ -56,6 +65,20 @@ def term_call_server(ip_address, cam_user, cam_pass, call_id):
     response = requests.post(url, auth=auth, headers=headers, json=payload)
     response.raise_for_status()
 
+def get_call_status(ip_address, cam_user, cam_pass, call_id):
+    auth = HTTPDigestAuth(cam_user, cam_pass)
+    url = f"http://{ip_address}/vapix/call"
+    payload = {
+        "axcall:GetCallStatus": {
+            "CallId": call_id
+        }
+    }
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    response = requests.post(url, auth=auth, headers=headers, json=payload)
+    response.raise_for_status()
+    return response.text
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
-
